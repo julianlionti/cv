@@ -1,5 +1,7 @@
 # Curriculum Vitae
 
 ## Icons 
--Pixel perfect
--Kiranshastry
+- Pixel perfect
+- Kiranshastry
+- Freepik
+- Smashicons

@@ -73,7 +73,7 @@ const useClasses = makeStyles((theme) => ({
     paddingRight: theme.spacing(isChild ? 0 : 2),
   }),
   right: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[200],
   },
   title: {
     display: 'flex',

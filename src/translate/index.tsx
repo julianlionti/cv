@@ -10,6 +10,13 @@ export interface LangProps {
   skills: string
   education: string
   interests: string
+  languages: string
+  english: string
+  writing: string
+  reading: string
+  oral: string
+  download: string
+  changeTheme: string
 }
 
 export const { useLang, LangProvider } = createLangCtx<LangProps>()

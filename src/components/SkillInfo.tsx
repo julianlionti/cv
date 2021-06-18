@@ -1,15 +1,12 @@
 import { makeStyles, Rating, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import VisibilitySensor from 'react-visibility-sensor'
+import { SVGIcon } from './ContactInfo'
 
 interface Props {
   title: string
   knowledge: number
-  Icon: React.FunctionComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined
-    }
-  >
+  Icon?: SVGIcon
 }
 
 const iconSize = { width: 24, height: 24 }
@@ -39,7 +36,7 @@ const SkillInfo = ({ Icon, knowledge, title }: Props) => {
         if (isVisible) setOnScreen(true)
       }}>
       <div className={classes.root}>
-        <Icon {...iconSize} className={classes.icon} />
+        {Icon && <Icon {...iconSize} className={classes.icon} />}
         <Typography className={classes.title}>{title}</Typography>
         <Rating name="half-rating-read" value={rating} precision={0.5} readOnly />
       </div>

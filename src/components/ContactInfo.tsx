@@ -1,12 +1,12 @@
 import { Link, makeStyles } from '@material-ui/core'
 import React from 'react'
 
+export type SVGIcon = React.FunctionComponent<
+  React.SVGProps<SVGSVGElement> & { title?: string | undefined }
+>
+
 interface ContactInfoProps {
-  Icon: React.FunctionComponent<
-    React.SVGProps<SVGSVGElement> & {
-      title?: string | undefined
-    }
-  >
+  Icon: SVGIcon
   link: { href: string; title: string }
 }
 

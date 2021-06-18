@@ -10,4 +10,11 @@ export const enUs: LangProps = {
   interests: 'Interests',
   skills: 'Skills',
   workExperience: 'Work Experience',
+  languages: 'Languages',
+  english: 'English',
+  writing: 'Writing',
+  reading: 'Reading',
+  oral: 'Oral',
+  download: 'Download',
+  changeTheme: 'Change theme',
 }

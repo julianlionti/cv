@@ -10,6 +10,7 @@ interface ExperienceProps {
 }
 export type FinalExperience = Omit<ExperienceProps, 'description'> & { description: string }
 
+type LanguageKnwoledge = { writing: number; reading: number; oral: number }
 interface UserProps {
   name: string
   bornDate: Date
@@ -23,6 +24,13 @@ interface UserProps {
   detailProfile: { en: string; es: string }
   experience: ExperienceProps[]
   skills: { title: SkillsLangs; knowledge: number }[]
+  languages: { english: LanguageKnwoledge }
+  studies: {
+    date: string
+    title: { es: string; en: string }
+    place: { es: string; en: string }
+    detail?: string
+  }[]
 }
 
 const userAndSkills: UserProps = {
@@ -97,6 +105,29 @@ const userAndSkills: UserProps = {
     { title: 'JavaScript', knowledge: 4.5 },
     { title: 'MongoDB', knowledge: 3.5 },
   ],
+  languages: {
+    english: { reading: 4, oral: 3, writing: 3 },
+  },
+  studies: [
+    {
+      title: { es: 'BACHILLER NACIONAL BILINGÜE EN CIENCIAS Y LETRAS', en: 'BILINGUAL NATIONAL BACHELOR IN SCIENCES AND LETTERS' },
+      place: { es: 'Escuela Del Mirador', en: 'Belvedere School' },
+      date: '03/2001 – 11/2005',
+    },
+    {
+      title: { es: 'TÉCNICO EN SEGURIDAD E HIGIENE', en: 'SAFETY AND HYGIENE TECHNICIAN' },
+      place: { es: 'Instituto Perito Moreno', en: 'Institute Perito Moreno' },
+      date: '04/2008 – 12/2011',
+    },
+    {
+      title: { es: 'LICENCIATURA EN SEGURIDAD E HIGIENE', en: 'DEGREE IN SAFETY AND HYGIENE' },
+      place: {
+        es: 'Universidad Nacional de Lomas de Zamora',
+        en: 'National University of Lomas de Zamora',
+      },
+      date: '04/2012 – 11/2013.',
+    },
+  ],
 }
 
 export const useUserAndSkills = () => {
@@ -111,6 +142,11 @@ export const useUserAndSkills = () => {
     experience: userAndSkills.experience.map((e) => ({
       ...e,
       description: e.description[finalLang],
+    })),
+    studies: userAndSkills.studies.map((e) => ({
+      ...e,
+      place: e.place[finalLang],
+      title: e.title[finalLang],
     })),
   }
 }

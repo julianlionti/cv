@@ -28,7 +28,7 @@ const TimeLineItem = ({ date, description, title, icon }: FinalExperience) => {
         <TimelineItem key={title}>
           <TimelineOppositeContent color="text.secondary">{date}</TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot>
+            <TimelineDot color="secondary">
               <Icon>{icon}</Icon>
             </TimelineDot>
             <TimelineConnector />
@@ -56,8 +56,8 @@ const WorkExperience = () => {
   return (
     <Section isChild title={t.workExperience} noDivider>
       <Timeline align="alternate">
-        {experience.map((exp) => (
-          <TimeLineItem {...exp} />
+        {experience.reverse().map((exp) => (
+          <TimeLineItem key={exp.title} {...exp} />
         ))}
       </Timeline>
     </Section>

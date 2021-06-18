@@ -10,4 +10,11 @@ export const esAr: LangProps = {
   interests: 'Intereses',
   skills: 'Habilidades',
   workExperience: 'Experiencia Laboral',
+  languages: 'Idiomas',
+  english: 'Inglés',
+  writing: 'Escritura',
+  reading: 'Lectura',
+  oral: 'Oral',
+  download: 'Descargar',
+  changeTheme: 'Cambiar tema',
 }
