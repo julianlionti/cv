@@ -8,6 +8,11 @@ interface ExperienceProps {
   description: { en: string; es: string }
   icon: 'settings_cell' | 'computer' | 'important_devices'
 }
+export interface FinalStudies {
+  title: string
+  date: string
+  place: string
+}
 export type FinalExperience = Omit<ExperienceProps, 'description'> & { description: string }
 
 type LanguageKnwoledge = { writing: number; reading: number; oral: number }
@@ -17,6 +22,8 @@ interface UserProps {
   contact: {
     phone: string
     mail: string
+    linkedin: string
+    github: string
   }
   position: { en: string; es: string }
   profile: { en: string; es: string }
@@ -37,15 +44,28 @@ const userAndSkills: UserProps = {
   name: 'Julián Patricio Lionti',
   bornDate: new Date(1988, 10, 18),
   contact: {
-    phone: '1136810998',
+    phone: '+54 9 11 3681-0998',
     mail: 'julianlionti@hotmail.com',
+    github: 'https://github.com/julianlionti',
+    linkedin: 'https://www.linkedin.com/in/julian-patricio-lionti-84122857',
   },
   position: { en: 'FullStack Developer', es: 'Desarrollador FullStack' },
   profile: {
     es: '¡Hola! Mi nombre es Julián Lionti soy desarrollador FullStack desde el año 2011. He trabajado en distintas tecnologías, entre ellas, C#, PHP, Java, Swift pero en los últimos 4 años me dediqué al mundo Javascript. Hoy en día me concentro en NodeJs y React.',
     en: "Hi! My name is Julián Lionti, i'm a FullStack Developer since 2011. I've worked in different technologies, including C #, PHP, Java, Swift but in the last 4 years I have dedicated myself to the Javascript world. Today I focus on NodeJs and React",
   },
-  profileTags: ['C#', 'PHP', 'SQL', 'Java', 'Swift', 'JavaScript', 'React', 'NodeJS', 'MongoDB'],
+  profileTags: [
+    'JavaScript',
+    'TypeScript',
+    'React',
+    'NodeJS',
+    'MongoDB',
+    'C#',
+    'PHP',
+    'SQL',
+    'Java',
+    'Swift',
+  ],
   detailProfile: {
     es: 'En cuanto a base de datos. Los primeros años, junto con C#, trabajé con SQL alrededor de 5 años. A medida que fui migrando a NodeJs también cambié la base de datos y decidí usar MongoDB. Por lo que actualmente me encuentro trabajando en base de datos NoSql.\nCuento con experiencia haciendo aplicaciones tanto para Android como para iOS. En un primer momento utilizaba Java (android) y Swift (iOS) y actualmente utilizo React Native.',
     en: 'As for database. The first years, along with C#, I worked with SQL for about 5 years. As I was migrating to NodeJs I also changed the database and decided to use MongoDB. So I am currently working on NoSql databases\nI have experience making applications for both Android and iOS. At first I used Java (android) and Swift (iOS) and now I use React Native.',
@@ -110,7 +130,10 @@ const userAndSkills: UserProps = {
   },
   studies: [
     {
-      title: { es: 'BACHILLER NACIONAL BILINGÜE EN CIENCIAS Y LETRAS', en: 'BILINGUAL NATIONAL BACHELOR IN SCIENCES AND LETTERS' },
+      title: {
+        es: 'BACHILLER NACIONAL BILINGÜE EN CIENCIAS Y LETRAS',
+        en: 'BILINGUAL NATIONAL BACHELOR IN SCIENCES AND LETTERS',
+      },
       place: { es: 'Escuela Del Mirador', en: 'Belvedere School' },
       date: '03/2001 – 11/2005',
     },
@@ -130,7 +153,21 @@ const userAndSkills: UserProps = {
   ],
 }
 
-export const useUserAndSkills = () => {
+export interface UserAndSkills {
+  name: string
+  bornDate: Date
+  contact: { phone: string; mail: string; github: string; linkedin: string }
+  position: string
+  profile: string
+  profileTags: string[]
+  detailProfile: string
+  experience: FinalExperience[]
+  skills: { title: SkillsLangs; knowledge: number }[]
+  languages: { english: LanguageKnwoledge }
+  studies: { title: string; place: string; date: string }[]
+}
+
+export const useUserAndSkills = (): UserAndSkills => {
   const { lang } = useLang()
   const finalLang = lang === 'es' ? 'es' : 'en'
 

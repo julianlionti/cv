@@ -8,20 +8,19 @@ import { ReactComponent as Sun } from '../assets/icons/sun.svg'
 import { ReactComponent as Yanki } from '../assets/icons/eeuu.svg'
 import { ReactComponent as PDF } from '../assets/icons/download.svg'
 import SwitchIconsBtn from './SwitchIconsBtn'
-import html2canvas from 'html2canvas'
-import downloadjs from 'downloadjs'
-import { useUserAndSkills } from '../hooks/useUserAndSkills'
+import { usePdf } from '../utils/usePdf'
 
 interface HeaderProps {
   theme: ThemeState
   onTheme: () => void
+  onLoading: (val: boolean) => void
 }
 
-const Header = ({ theme, onTheme }: HeaderProps) => {
+const Header = ({ theme, onTheme, onLoading }: HeaderProps) => {
   const [showMenu, setShowMenu] = useState(true)
   const { t, lang, setLang } = useLang()
   const classes = useClasses()
-  const { name } = useUserAndSkills()
+  const generate = usePdf()
 
   const onLang = useCallback(() => {
     setLang((l) => (l === 'es' ? 'en' : 'es'))
@@ -38,14 +37,18 @@ const Header = ({ theme, onTheme }: HeaderProps) => {
     }
   }, [])
 
-  const downloadAsPDF = useCallback(async () => {
-    const input = document.getElementById('MainCard')
+  const downloadAsPDF = useCallback(() => {
+    onLoading(true)
+    generate(() => {
+      onLoading(false)
+    })
+    /*
     if (!input) return
     const canvas = await html2canvas(input)
     if (!canvas) return
     var imgData = canvas.toDataURL('image/png')
-    downloadjs(imgData, `CV - ${name}.jpg`)
-  }, [name])
+    downloadjs(imgData, `CV - ${name}.jpg`)*/
+  }, [generate, onLoading])
 
   return (
     <Fade timeout={1500} in={showMenu}>

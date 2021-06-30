@@ -13,7 +13,7 @@ const Education = () => {
     <Section title={t.education}>
       <List dense>
         {studies.map((st) => (
-          <ListItem>
+          <ListItem key={st.title}>
             <ListItemText primary={st.title} secondary={`${st.date} - ${st.place}`} />
           </ListItem>
         ))}

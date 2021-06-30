@@ -17,6 +17,7 @@ export interface LangProps {
   oral: string
   download: string
   changeTheme: string
+  about: string
 }
 
 export const { useLang, LangProvider } = createLangCtx<LangProps>()

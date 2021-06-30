@@ -17,4 +17,5 @@ export const enUs: LangProps = {
   oral: 'Oral',
   download: 'Download',
   changeTheme: 'Change theme',
+  about: 'This CV its make using React and was developed by Julian Lionti',
 }
