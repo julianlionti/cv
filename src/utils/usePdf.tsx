@@ -481,8 +481,8 @@ export const usePdf = () => {
       middle(drawAbout(lastY))
 
       onFinished()
-      pdf.output('dataurlnewwindow')
-      // downloadjs(pdf.output('blob'), `CV - ${name}.pdf`)
+      // pdf.output('dataurlnewwindow')
+      downloadjs(pdf.output('blob'), `CV - ${name}.pdf`)
     },
     [cvColors, userSkills, t],
   )
