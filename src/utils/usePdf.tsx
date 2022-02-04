@@ -1,6 +1,6 @@
-import jspdf from 'jspdf'
+import jspdf, { TextOptionsLight } from 'jspdf'
 import { useCallback, useMemo } from 'react'
-import Picture from '../assets/images/perfil.jpg'
+import Picture from '../assets/images/perfil2.jpeg'
 import Full from '../assets/images/full.png'
 import Half from '../assets/images/half.png'
 import Empty from '../assets/images/emptygm.png'
@@ -15,7 +15,6 @@ import {
   useUserAndSkills,
 } from '../hooks/useUserAndSkills'
 
-import base64Font from '../assets/fonts/Roboto.base'
 import { rgba2hex, wordWrap } from './StringHelpers'
 import downloadjs from 'downloadjs'
 import { LangProps, useLang } from '../translate'
@@ -50,11 +49,19 @@ const drawBackground = (pdf: jspdf, bgcolor: string, grey: string) => {
   pdf.rect(greySectionX, 0, 80, 297, 'F')
 }
 
-const drawTitle = (pdf: jspdf, color: string, text: string, y: number, x?: number) => {
+const drawTitle = (
+  pdf: jspdf,
+  color: string,
+  text: string,
+  y: number,
+  x?: number,
+  fontSize?: number,
+  opts?: TextOptionsLight,
+) => {
   for (let i = 0; i < 5; i++) {
     pdf.setTextColor(color)
-    pdf.setFontSize(16)
-    pdf.text(text, x || leftMargin, y)
+    pdf.setFontSize(fontSize || 16)
+    pdf.text(text, x || leftMargin, y, opts)
   }
   return pdf.getTextDimensions(text, { fontSize: 16 }).h + y + lineHeight
 }
@@ -155,10 +162,10 @@ const drawPersonalInfo =
   () => (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
     const { bgColor, primaryText, secondaryText } = colors
     const { name, position } = userAndSkills
-    const perfilWidth = 85
-    const perfilheight = 42.5
+    const perfilWidth = 79.95
+    const perfilheight = 60
 
-    pdf.addImage(Picture, 'JPEG', -25, -5, perfilWidth, perfilheight, t.profile, 'FAST')
+    pdf.addImage(Picture, 'JPEG', -20, -5, perfilWidth, perfilheight, t.profile, 'FAST')
 
     pdf.setLineWidth(39)
     pdf.setDrawColor(bgColor)
@@ -176,7 +183,7 @@ const drawPersonalInfo =
 
 const drawProfile =
   () => (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
-    const { primaryText, secondaryText, primary, bgColor, grey } = colors
+    const { primaryText, secondaryText, primary, bgColor, secondary, grey } = colors
     const { profile, detailProfile, profileTags } = userAndSkills
 
     pdf.setLineWidth(0.5)
@@ -191,10 +198,14 @@ const drawProfile =
     drawInnerText(pdf, secondaryText, wordWrap(par2, 96), leftMargin, 92)
 
     const drawChip = (x: number, y: number, text: string) => {
+      let fillColor = primary
+      if (text.includes('Redux') || text.includes('Formik')) {
+        fillColor = secondary
+      }
       const textWith = pdf.getTextWidth(text)
       const width = 10 + textWith
       const finalX = x + width / 2 - textWith / 2
-      pdf.setFillColor(primary)
+      pdf.setFillColor(fillColor)
       pdf.roundedRect(x, y, width, 9, 4, 4, 'F')
       pdf.setFontSize(11)
       pdf.setTextColor('#FFF')
@@ -285,7 +296,7 @@ const drawLanguages =
 const drawExperience =
   (y: number) =>
   async (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
-    const { primaryText, secondary, grey, secondaryText } = colors
+    const { primaryText, secondary, bgColor, grey, secondaryText } = colors
     const { experience } = userAndSkills
 
     const drawWork = (y: number, exp: FinalExperience, index: number) => {
@@ -300,48 +311,53 @@ const drawExperience =
         }
       }
 
+      const isLeft = index % 2 === 0
       const radio = 6
       const middleX = greySectionX / 2
+      const textMargins = 3
+      const leftTextX = isLeft ? middleX - radio - textMargins : middleX + radio + textMargins
+      const rightTextX = !isLeft ? middleX - radio - textMargins : middleX + radio + textMargins
+
+      pdf.setFontSize(11)
+      pdf.setTextColor(secondaryText)
+      pdf.text(exp.date, leftTextX, y, { align: isLeft ? 'right' : 'left' })
+
+      const wrappedTitle = wordWrap(exp.title, 30)
+      let finalY =
+        drawTitle(pdf, primaryText, wrappedTitle, y, rightTextX, 14, {
+          align: !isLeft ? 'right' : 'left',
+        }) - 5
+
+      if (exp.title.includes('Jefatura') || exp.title.includes('Ministerio')) {
+        finalY = finalY + 7
+      }
 
       const wrappedDesc = wordWrap(exp.description, 30)
-      const finalY =
-        wrappedDesc.split('\n').length * pdf.getTextDimensions(wrappedDesc).h +
-        y +
-        (index === 0 ? 20 : 10)
+      pdf.setFontSize(11)
+      pdf.setTextColor(secondaryText)
+      pdf.text(wrappedDesc, rightTextX, finalY, {
+        align: !isLeft ? 'right' : 'left',
+      })
+      finalY = finalY + wrappedDesc.split('\n').length * pdf.getTextDimensions(wrappedDesc).h + 5
+
+      finalY =
+        drawTitle(
+          pdf,
+          primaryText,
+          wordWrap(`${t.techs}${exp.techs.join(', ')}`, 27),
+          finalY,
+          rightTextX,
+          13,
+          {
+            align: !isLeft ? 'right' : 'left',
+          },
+        ) + 2.5
 
       pdf.setFillColor(secondary)
       pdf.setDrawColor(grey)
       pdf.line(middleX, y, middleX, finalY)
       pdf.circle(middleX, y, radio, 'FD')
-
       pdf.addImage(getIcon(), middleX - radio / 2, y - radio / 2, 6, 6, exp.icon, 'FAST')
-
-      let textWidth = pdf.getTextDimensions(exp.date, { fontSize: 11 }).w
-
-      const dateX = index % 2 === 0 ? middleX - radio - textWidth - 5 : middleX + radio + 5
-      pdf.setFontSize(11)
-      pdf.setTextColor(secondaryText)
-      pdf.text(exp.date, dateX, y)
-
-      textWidth = pdf.getTextDimensions(exp.title, { fontSize: 12 }).w
-      const titleX = index % 2 !== 0 ? middleX - radio - textWidth - 5 : middleX + radio + 5
-
-      for (let i = 0; i < 5; i++) {
-        pdf.setFontSize(12)
-        pdf.setTextColor(primaryText)
-        pdf.text(
-          exp.title.includes(',') ? exp.title.split(',').map((e) => e.trim()) : exp.title,
-          titleX,
-          y,
-        )
-      }
-
-      const descX = index % 2 === 0 ? greySectionX / 2 + 10 : greySectionX / 2 - 10
-      pdf.setFontSize(11)
-      pdf.setTextColor(secondaryText)
-      pdf.text(wrappedDesc, descX, y + (index === 0 ? 10 : 5), {
-        align: index % 2 !== 0 ? 'right' : 'left',
-      })
 
       return finalY
     }
@@ -352,24 +368,26 @@ const drawExperience =
     const finalExperience = experience.reverse()
     for (let i = 0; i < finalExperience.length; i++) {
       lastY = drawWork(lastY, finalExperience[i], i)
+      if (i === 2) {
+        lastY = 10
+        createDividedPage(pdf, bgColor, grey)
+      }
     }
   }
 
 const drawEducation =
-  () => async (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
-    const { primaryText, secondaryText, grey, bgColor } = colors
+  (lastY: number) =>
+  async (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
+    const { primaryText, secondaryText, bgColor } = colors
     const { studies } = userAndSkills
+    lastY = lastY - 25
 
-    pdf.addPage()
-    drawBackground(pdf, bgColor, grey)
-
-    pdf.setLineWidth(0.5)
-    pdf.setDrawColor(grey)
+    // createDividedPage(pdf, bgColor, grey)
     pdf.setFillColor(bgColor)
-    pdf.rect(-10, 16, pageWidth + 20, 62, 'FD')
+    pdf.rect(-10, lastY, pageWidth + 20, 62, 'FD')
 
     let x = leftMargin
-    let lastY = 24
+    lastY = lastY + 8
     lastY = drawTitle(pdf, primaryText, t.education, lastY, x)
 
     const drawStudy = (sy: number, st: FinalStudies) => {
@@ -441,8 +459,8 @@ export const usePdf = () => {
 
       const middle = async (fn: any) => fn(pdf, cvColors, userSkills, t)
 
-      pdf.addFileToVFS('Roboto-monospace.ttf', base64Font)
-      pdf.addFont('Roboto-monospace.ttf', 'Roboto', 'monospace')
+      // pdf.addFileToVFS('Roboto-monospace.ttf', base64Font)
+      // pdf.addFont('Roboto-monospace.ttf', 'Roboto', 'monospace')
 
       drawBackground(pdf, bgColor, grey)
 
@@ -459,15 +477,22 @@ export const usePdf = () => {
 
       lastY = belowProfileY
       await middle(drawExperience(lastY))
-      lastY = await middle(drawEducation())
+      lastY = await middle(drawEducation(lastY))
       middle(drawAbout(lastY))
 
       onFinished()
-      // pdf.output('dataurlnewwindow')
-      downloadjs(pdf.output('blob'), `CV - ${name}.pdf`)
+      pdf.output('dataurlnewwindow')
+      // downloadjs(pdf.output('blob'), `CV - ${name}.pdf`)
     },
     [cvColors, userSkills, t],
   )
 
   return generate
+}
+function createDividedPage(pdf: jspdf, bgColor: string, grey: string) {
+  pdf.addPage()
+  drawBackground(pdf, bgColor, grey)
+
+  pdf.setLineWidth(0.5)
+  pdf.setDrawColor(grey)
 }

@@ -18,4 +18,5 @@ export const esAr: LangProps = {
   download: 'Descargar',
   changeTheme: 'Cambiar tema',
   about: 'El CV está hecho en React y fue desarrollado por Julian Lionti',
+  techs: 'Tecnologias: ',
 }

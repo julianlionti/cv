@@ -15,7 +15,8 @@ import {
 import VisibilitySensor from 'react-visibility-sensor'
 import { useLang } from '../../translate'
 
-const TimeLineItem = ({ date, description, title, icon }: FinalExperience) => {
+const TimeLineItem = ({ date, description, title, techs, icon }: FinalExperience) => {
+  const { t } = useLang()
   const [onScreen, setOnScreen] = useState(false)
   return (
     <VisibilitySensor
@@ -42,6 +43,9 @@ const TimeLineItem = ({ date, description, title, icon }: FinalExperience) => {
                 {e}
               </Typography>
             ))}
+            <Typography fontWeight={'bold'} component="span">
+              {`${t.techs}${techs.join(', ')}`}
+            </Typography>
           </TimelineContent>
         </TimelineItem>
       </Fade>

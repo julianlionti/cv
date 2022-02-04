@@ -1,7 +1,7 @@
 import { Avatar, Grid, makeStyles, Typography } from '@material-ui/core'
 import { useUserAndSkills } from '../../hooks/useUserAndSkills'
 import Section from '../Section'
-import Picture from '../../assets/images/perfil.jpg'
+import Picture from '../../assets/images/perfil2.jpeg'
 
 const PersonInfo = () => {
   const { name, position } = useUserAndSkills()

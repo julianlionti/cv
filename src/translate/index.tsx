@@ -18,6 +18,7 @@ export interface LangProps {
   download: string
   changeTheme: string
   about: string
+  techs: string
 }
 
 export const { useLang, LangProvider } = createLangCtx<LangProps>()
