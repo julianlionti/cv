@@ -52,8 +52,8 @@ const userAndSkills: UserProps = {
   },
   position: { en: 'FullStack Developer', es: 'Desarrollador FullStack' },
   profile: {
-    es: '¡Hola! Mi nombre es Julián Lionti soy desarrollador FullStack desde el año 2011. He trabajado en distintas tecnologías, entre ellas, C#, PHP, Java, Swift pero en los últimos 4 años me dediqué al mundo Javascript. Hoy en día me concentro en NodeJs y React.',
-    en: "Hi! My name is Julián Lionti, i'm a FullStack Developer since 2011. I've worked in different technologies, including C #, PHP, Java, Swift but in the last 4 years I have dedicated myself to the Javascript world. Today I focus on NodeJs and React",
+    es: '¡Hola! Mi nombre es Julián Lionti soy desarrollador FullStack desde el año 2011. He trabajado en distintas tecnologías, entre ellas, C#, PHP, Java, Swift pero en el año 2018 me dediqué al mundo Javascript. Hoy en día me concentro en NodeJs y React.',
+    en: "Hi! My name is Julián Lionti, i'm a FullStack Developer since 2011. I've worked in different technologies, including C #, PHP, Java, Swift but from the year 2018 I've dedicated myself to the Javascript world. Today I focus on NodeJs and React",
   },
   profileTags: [
     'JavaScript',
