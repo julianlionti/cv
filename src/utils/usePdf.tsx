@@ -328,9 +328,9 @@ const drawExperience =
           align: !isLeft ? 'right' : 'left',
         }) - 5
 
-      if (exp.title.includes('Jefatura') || exp.title.includes('Ministerio')) {
-        finalY = finalY + 7
-      }
+      // if (exp.title.includes('Chief') || exp.title.includes('Minister')) {
+      //   finalY = finalY + 7
+      // }
 
       const wrappedDesc = wordWrap(exp.description, 30)
       pdf.setFontSize(11)
@@ -338,7 +338,7 @@ const drawExperience =
       pdf.text(wrappedDesc, rightTextX, finalY, {
         align: !isLeft ? 'right' : 'left',
       })
-      finalY = finalY + wrappedDesc.split('\n').length * pdf.getTextDimensions(wrappedDesc).h + 5
+      finalY = finalY + wrappedDesc.split('\n').length * pdf.getTextDimensions(wrappedDesc).h + 8
 
       finalY =
         drawTitle(
@@ -359,6 +359,7 @@ const drawExperience =
       pdf.circle(middleX, y, radio, 'FD')
       pdf.addImage(getIcon(), middleX - radio / 2, y - radio / 2, 6, 6, exp.icon, 'FAST')
 
+      if (exp.title.includes('Minister')) return finalY + 10
       return finalY
     }
 
@@ -368,7 +369,7 @@ const drawExperience =
     const finalExperience = experience.reverse()
     for (let i = 0; i < finalExperience.length; i++) {
       lastY = drawWork(lastY, finalExperience[i], i)
-      if (i === 2) {
+      if (i === 1) {
         lastY = 10
         createDividedPage(pdf, bgColor, grey)
       }
@@ -380,7 +381,7 @@ const drawEducation =
   async (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
     const { primaryText, secondaryText, bgColor } = colors
     const { studies } = userAndSkills
-    lastY = lastY - 25
+    lastY = lastY + 90
 
     // createDividedPage(pdf, bgColor, grey)
     pdf.setFillColor(bgColor)
@@ -415,7 +416,8 @@ const drawEducation =
 const drawAbout =
   (y: number) =>
   async (pdf: jspdf, colors: CvColors, userAndSkills: UserAndSkills, t: LangProps) => {
-    const { primaryText } = colors
+    const { primaryText, bgColor, grey } = colors
+    createDividedPage(pdf, bgColor, grey)
 
     for (let i = 0; i < 10; i++) {
       pdf.setTextColor(primaryText)
@@ -478,7 +480,7 @@ export const usePdf = () => {
       lastY = belowProfileY
       await middle(drawExperience(lastY))
       lastY = await middle(drawEducation(lastY))
-      middle(drawAbout(lastY))
+      middle(drawAbout(20))
 
       onFinished()
       // pdf.output('dataurlnewwindow')

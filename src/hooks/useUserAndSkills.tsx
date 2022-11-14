@@ -116,7 +116,7 @@ const userAndSkills: UserProps = {
     },
     {
       date: `02/2013 - 08/2021`,
-      title: 'Ministerio de Agricultura, Ganadería y Pesca',
+      title: 'Agriculture Minister',
       icon: 'important_devices',
       description: {
         es: 'Tareas desarrolladas: Programación de todo tipo de sistemas informativos y aplicaciones de uso general de usos internos y externos.',
@@ -138,7 +138,7 @@ const userAndSkills: UserProps = {
     {
       date: `08/2021 - 10/2021`,
       icon: 'computer',
-      title: 'Jefatura de Gabinete de Ministros',
+      title: 'Chief of Cabinet of Ministers',
       description: {
         es: 'Responsable del FRONTEND. Desarrollo de un sistema para el ingreso a la planta permanente en el estado',
         en: 'Leader of FRONTEND. We developed a system for citizens to register, add their work experience and apply to a selected job position inside the goverment',
@@ -146,12 +146,22 @@ const userAndSkills: UserProps = {
       techs: ['React', 'Typescript'],
     },
     {
-      date: `11/2010 - Actualidad`,
+      date: `11/2021 - 02/2022`,
       icon: 'computer',
       title: 'Publicis Groupe',
       description: {
         es: 'Desarrollador principalmente frontend',
-        en: 'Most of the part working on FRONTEND',
+        en: "Tech lead, I was hired as a senior frontend developer to improve the code. The project is made with Javascript and has a lot of technical debt. I've to propose and realize improvements, my fist propose was to add Typescript for all new files in proect, right now we are working 100% on typescript",
+      },
+      techs: ['React', 'Typescript', '.NET'],
+    },
+    {
+      date: `03/2022 - Today`,
+      icon: 'computer',
+      title: 'Team International',
+      description: {
+        es: 'Desarrollador principalmente frontend',
+        en: "Frontend Leader, I'm responsible of creating high quality code. I had to create a development group from scratch. We are creating the main system of the a more than 100 years company",
       },
       techs: ['React', 'Typescript', '.NET'],
     },
